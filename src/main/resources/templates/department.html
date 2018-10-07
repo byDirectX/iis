@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Кафедры</title>
+</head>
+<body>
+<table>
+    <tr th:each="departmentEach : ${listDepartment}">
+        <td th:utext="${departmentEach.name}"></td>
+        <td th:utext="${departmentEach.longName}"></td>
+        <td><a th:href='@{/department/remove(id = ${departmentEach.id})}'>Удалить</a></td>
+        <td><a th:href='@{/department/edit(id = ${departmentEach.id})}'>Обновить</a></td>
+    </tr>
+</table>
+
+<h2>Добавить</h2>
+<form th:action="@{/department}" th:object="${department}" method="post">
+    <input type="hidden" th:field="*{id}"/>
+    <p>Короткое название: <input type="text" th:field="*{name}" th:value="*{name}"/></p>
+    <p>Полное название: <input type="text" th:field="*{longName}" th:value="*{longName}"/></p>
+    <p><input type="submit" value="Добавить" /> <input type="reset" value="Сбросить" /></p>
+</form>
+</body>
+</html>

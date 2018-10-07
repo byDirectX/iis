@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Группы</title>
+</head>
+<body>
+<table th:if="${listGroup != null}">
+    <tr th:each="groupEach : ${listGroup}">
+        <td th:utext="${groupEach.name}"></td>
+        <td><a th:href='@{/group/remove(id = ${groupEach.id})}'>Удалить</a></td>
+        <td><a th:href='@{/group/edit(id = ${groupEach.id})}'>Обновить</a></td>
+    </tr>
+</table>
+
+<h2>Добавить</h2>
+<form th:action="@{/group}" th:object="${group}" method="post">
+    <input type="hidden" th:field="*{id}"/>
+    <p>Название предмета: <input type="text" th:field="*{name}" th:value="*{name}"/></p>
+    <p><input type="submit" value="Добавить" /> <input type="reset" value="Сбросить" /></p>
+</form>
+</body>
+</html>

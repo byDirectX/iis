@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Дисциплины по группам</title>
+</head>
+<body>
+<th:block th:if="${listGroup != null}" th:each="groupEach : ${listGroup}">
+    <h2 th:utext="${groupEach.name}"></h2>
+    <table th:each="groupAcademicSubjectEach : ${listGroupAcademicSubject}">
+        <th:block th:each="academicSubjectEach : ${listAcademicSubject}">
+            <tr th:if="${groupEach.getId() == groupAcademicSubjectEach.getStudyGroupId() and
+            groupAcademicSubjectEach.getAcademicSubjectId() == academicSubjectEach.getId()}">
+                <td th:utext="${academicSubjectEach.name}"></td>
+                <td th:utext="${groupAcademicSubjectEach.number_hours}"></td>
+            </tr>
+        </th:block>
+    </table>
+</th:block>
+</body>
+</html>
