@@ -1,5 +1,7 @@
 package com.bondarev.shedulesubsystem.model;
 
+import org.springframework.context.annotation.Bean;
+
 import javax.persistence.*;
 import java.util.Date;
 
