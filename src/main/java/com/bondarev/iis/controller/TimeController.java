@@ -2,6 +2,8 @@ package com.bondarev.iis.controller;
 
 import com.bondarev.iis.model.Time;
 import com.bondarev.iis.service.TimeService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,6 +15,8 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class TimeController {
 
+    private static final Logger log = LoggerFactory.getLogger(TimeController.class);
+
     @Autowired
     private TimeService timeService;
 
@@ -22,6 +26,8 @@ public class TimeController {
         mav.addObject("listTime", timeService.getTimeList());
         mav.addObject("time", new Time());
 
+        log.info("Time issued sucessfully");
+
         mav.setViewName("time");
         return mav;
     }
@@ -30,8 +36,10 @@ public class TimeController {
     public String addTime(@ModelAttribute Time time) {
         if (time.getId() == 0) {
             timeService.addTime(time);
+            log.info("Time added sucessfully");
         } else {
             timeService.updateTime(time);
+            log.info("Time update sucessfully");
         }
 
         return "redirect:/time";
@@ -41,6 +49,8 @@ public class TimeController {
     public String removeTime(@RequestParam("id") int id) {
         timeService.removeTime(id);
 
+        log.info("Time remove sucessfully");
+
         return "redirect:/time";
     }
 
@@ -48,6 +58,8 @@ public class TimeController {
     public ModelAndView editTime(@RequestParam("id") int id, ModelAndView mav) {
         mav.addObject("time", timeService.getTimeById(id));
         mav.addObject("listTime", timeService.getTimeList());
+
+        log.info("Time for edit sucessfully");
 
         mav.setViewName("time");
         return mav;
