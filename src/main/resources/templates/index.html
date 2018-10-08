@@ -1,10 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Главная</title>
 </head>
 <body>
+
+<th:block th:if="${#httpServletRequest.remoteUser} != null">
+    <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
+</th:block>
+
+<th:block th:if="${#httpServletRequest.remoteUser} == null">
+    <p>Нажмите <a th:href="@{/hello}">Войти</a> чтобы авторизоваться в системе.</p>
+</th:block>
+
 <ul>
     <li><a href="/academicsubject">Предметы</a></li>
     <li><a href="/group">Группы</a></li>
