@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Регистрация</title>
+</head>
+<body>
+<div>
+    Добавить нового пользователя
+</div>
+<p th:if="${message != null}" th:utext="${message}"></p>
+<form th:action="@{/registration}" th:object="${user}" method="post">
+    <div><label> Имя пользователя: <input type="text" name="name"/> </label></div>
+    <div><label> Пароль: <input type="password" name="password"/> </label></div>
+    <div><input type="submit" value="Зарегиситрироваться"/></div>
+</form>
+</body>
+</html>
