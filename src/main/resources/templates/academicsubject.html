@@ -1,15 +1,20 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Предметы</title>
+
+    <link type="text/css" media="all" th:href="@{/css/style.css}" rel="stylesheet" />
 </head>
 <body>
 
-<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Sign Out"/>
-</form>
+<th:block th:if="${#httpServletRequest.remoteUser} != null">
+    <h1 th:inline="text">Здравствуй [[${#httpServletRequest.remoteUser}]]!</h1>
+    <form th:action="@{/logout}" method="post">
+        <input id="inputout" type="submit" value="Выйти"/>
+    </form>
+</th:block>
 
 <table>
     <tr th:each="academicSubjectEach : ${academicSubjectList}">
@@ -25,5 +30,6 @@
     <p>Название предмета: <input type="text" th:field="*{name}" th:value="*{name}"/></p>
     <p><input type="submit" value="Добавить" /> <input type="reset" value="Сбросить" /></p>
 </form>
+
 </body>
 </html>

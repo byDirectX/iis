@@ -3,13 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Преподаватели</title>
+
+    <link type="text/css" media="all" th:href="@{/css/style.css}" rel="stylesheet" />
 </head>
 <body>
 
-<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Sign Out"/>
-</form>
+<th:block th:if="${#httpServletRequest.remoteUser} != null">
+    <h1 th:inline="text">Здравствуй [[${#httpServletRequest.remoteUser}]]!</h1>
+    <form th:action="@{/logout}" method="post">
+        <input id="inputout" type="submit" value="Выйти"/>
+    </form>
+</th:block>
 
 <table>
     <thead>

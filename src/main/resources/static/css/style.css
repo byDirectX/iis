@@ -1,0 +1,39 @@
+body {
+    color: #8f8f8f;
+    background-color: #f8f8f8;
+    font: 12px Tahoma, sans-serif;
+    border-top: 5px solid #7e7e7e;
+    margin: 0 15% 0;
+}
+
+button {
+    color: #fff;
+    background-color: #29c5e6;
+    border: none;
+    height: 32px;
+    font-family: 'Oswald', sans-serif;
+}
+
+#inputout {
+    margin: 20px 0;
+}
+
+table {
+    border-collapse: collapse;
+    margin: auto;
+}
+
+th {
+    background: aquamarine;
+    text-align: left;
+}
+
+td {
+    background: white;
+    text-align: center;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 4px;
+}
