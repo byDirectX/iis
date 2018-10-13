@@ -2,9 +2,12 @@ package com.bondarev.iis.controller;
 
 import com.bondarev.iis.model.AcademicSubject;
 import com.bondarev.iis.service.AcademicSubjectService;
+import com.bondarev.iis.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,11 +20,15 @@ public class AcademicSubjectController {
     @Autowired
     private AcademicSubjectService academicSubjectService;
 
+    @Autowired
+    private UserService userService;
+
 
     @RequestMapping(value = "/academicsubject", method = RequestMethod.GET)
     public ModelAndView mainAcademicSubject(ModelAndView mav) {
         mav.addObject("academicSubjectList", academicSubjectService.getListAcademicSubject());
         mav.addObject("academicSubject", new AcademicSubject());
+        mav.addObject("userList", userService.getListUser());
 
         log.info("Academic subjects issued sucessfully");
 
@@ -29,6 +36,7 @@ public class AcademicSubjectController {
         return mav;
     }
 
+    @PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/academicsubject", method = RequestMethod.POST)
     public String addAcademicSubject(@ModelAttribute AcademicSubject academicSubject) {
         if (academicSubject.getId() == 0) {
@@ -42,6 +50,7 @@ public class AcademicSubjectController {
         return "redirect:/academicsubject";
     }
 
+    @PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/academicsubject/remove", method = RequestMethod.GET)
     public String removeAcademicSubject(@RequestParam("id") int id) {
         academicSubjectService.removeAcademicSubject(id);
@@ -51,6 +60,7 @@ public class AcademicSubjectController {
         return "redirect:/academicsubject";
     }
 
+    @PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/academicsubject/edit", method = RequestMethod.GET)
     public ModelAndView editAcademicSubject(@RequestParam("id") int id, ModelAndView mav) {
         mav.addObject("academicSubject", academicSubjectService.getAcademicSubjectById(id));

@@ -5,6 +5,7 @@ import com.bondarev.iis.model.Group;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +33,8 @@ public class GroupController {
         return mav;
     }
 
-    @RequestMapping(value = "/group", method = RequestMethod.POST)
+    @PreAuthorize("hasRole('USER')")
+    @RequestMapping(value = { "/group" }, method = RequestMethod.POST)
     public String addGroup(@ModelAttribute Group group) {
         if (group.getId() == 0) {
             groupService.addGroup(group);
@@ -45,6 +47,7 @@ public class GroupController {
         return "redirect:/group";
     }
 
+    @PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/group/remove", method = RequestMethod.GET)
     public String removeGroup(@RequestParam("id") int id) {
         groupService.removeGroup(id);
@@ -54,6 +57,7 @@ public class GroupController {
         return "redirect:/group";
     }
 
+    @PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/group/edit", method = RequestMethod.GET)
     public ModelAndView editGroup(@RequestParam("id") int id, ModelAndView mav) {
         mav.addObject("group", groupService.getGroupById(id));

@@ -5,6 +5,7 @@ import com.bondarev.iis.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -72,6 +73,7 @@ public class ScheduleController {
         return mav;
     }
 
+    @PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/schedule", method = RequestMethod.POST)
     public ModelAndView addSchedule(@ModelAttribute("schedule") Schedule schedule, ModelAndView mav) {
         if (schedule.getId() == 0) {
@@ -88,6 +90,7 @@ public class ScheduleController {
         return mav;
     }
 
+    @PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/schedule/remove", method = RequestMethod.GET)
     public String removeGroup(@RequestParam("id") int id) {
         scheduleService.removeSchedule(id);
@@ -97,6 +100,7 @@ public class ScheduleController {
         return "redirect:/schedule";
     }
 
+    @PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/schedule/edit", method = RequestMethod.GET)
     public ModelAndView editGroup(@RequestParam("id") int id, ModelAndView mav) {
         mav.addObject("schedule", scheduleService.getScheduleById(id));

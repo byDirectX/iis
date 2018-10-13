@@ -30,19 +30,23 @@
         <td th:utext="${timeEach.timeTo}"></td>
         <td th:utext="${timeEach.number}"></td>
         <td th:utext="${timeEach.typeDay}"></td>
-        <td><a th:href='@{/time/remove(id = ${timeEach.id})}'>Удалить</a></td>
-        <td><a th:href='@{/time/edit(id = ${timeEach.id})}'>Обновить</a></td>
+        <th:block th:if="${#httpServletRequest} != null">
+            <td><a th:href='@{/time/remove(id = ${timeEach.id})}'>Удалить</a></td>
+            <td><a th:href='@{/time/edit(id = ${timeEach.id})}'>Обновить</a></td>
+        </th:block>
     </tr>
 </table>
 
-<h2>Добавить</h2>
-<form th:action="@{/time}" th:object="${time}" method="post">
-    <input type="hidden" th:field="*{id}"/>
-    <p>Время от: <input type="text" th:field="*{timeFrom}" th:value="*{timeFrom}"/></p>
-    <p>Время до: <input type="text" th:field="*{timeTo}" th:value="*{timeTo}"/></p>
-    <p>Номер пары: <input type="text" th:field="*{number}" th:value="*{number}"/></p>
-    <p>Тип дня: <input type="text" th:field="*{typeDay}" th:value="*{typeDay}"/></p>
-    <p><input type="submit" value="Добавить" /> <input type="reset" value="Сбросить" /></p>
-</form>
+<th:block th:if="${#httpServletRequest} != null">
+    <h2>Добавить</h2>
+    <form th:action="@{/time}" th:object="${time}" method="post">
+        <input type="hidden" th:field="*{id}"/>
+        <p>Время от: <input type="text" th:field="*{timeFrom}" th:value="*{timeFrom}"/></p>
+        <p>Время до: <input type="text" th:field="*{timeTo}" th:value="*{timeTo}"/></p>
+        <p>Номер пары: <input type="text" th:field="*{number}" th:value="*{number}"/></p>
+        <p>Тип дня: <input type="text" th:field="*{typeDay}" th:value="*{typeDay}"/></p>
+        <p><input type="submit" value="Добавить" /> <input type="reset" value="Сбросить" /></p>
+    </form>
+</th:block>
 </body>
 </html>

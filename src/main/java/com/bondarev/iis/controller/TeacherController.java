@@ -6,6 +6,7 @@ import com.bondarev.iis.service.TeacherService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -33,6 +34,7 @@ public class TeacherController {
         return mav;
     }
 
+    @PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/teacher", method = RequestMethod.POST)
     public String addTeacher(@ModelAttribute Teacher teacher) {
         if (teacher.getId() == 0) {
@@ -46,6 +48,7 @@ public class TeacherController {
         return "redirect:/teacher";
     }
 
+    @PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/teacher/remove", method = RequestMethod.GET)
     public String removeTeacher(@RequestParam("id") int id) {
         teacherService.removeTeacher(id);
@@ -55,6 +58,7 @@ public class TeacherController {
         return "redirect:/teacher";
     }
 
+    @PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/teacher/edit", method = RequestMethod.GET)
     public ModelAndView editTeacher(@RequestParam("id") int id, ModelAndView mav) {
         mav.addObject("teacher", teacherService.getTeacherById(id));

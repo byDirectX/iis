@@ -5,6 +5,7 @@ import com.bondarev.iis.service.TimeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +33,7 @@ public class TimeController {
         return mav;
     }
 
+    @PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/time", method = RequestMethod.POST)
     public String addTime(@ModelAttribute Time time) {
         if (time.getId() == 0) {
@@ -45,6 +47,7 @@ public class TimeController {
         return "redirect:/time";
     }
 
+    @PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/time/remove", method = RequestMethod.GET)
     public String removeTime(@RequestParam("id") int id) {
         timeService.removeTime(id);
@@ -54,6 +57,7 @@ public class TimeController {
         return "redirect:/time";
     }
 
+    @PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/time/edit", method = RequestMethod.GET)
     public ModelAndView editTime(@RequestParam("id") int id, ModelAndView mav) {
         mav.addObject("time", timeService.getTimeById(id));

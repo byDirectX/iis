@@ -7,6 +7,7 @@ import com.bondarev.iis.service.GroupAcademicSubjectService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,19 +42,24 @@ public class GroupAcademicSubjectController {
         return mav;
     }
 
-    //@RequestMapping(value = "/listofdisciplines", method = RequestMethod.POST)
+    @PreAuthorize("hasRole('USER')")
+    @RequestMapping(value = "/listofdisciplines", method = RequestMethod.POST)
     public String addDisciplinesOnList(@ModelAttribute GroupAcademicSubject groupAcademicSubject) {
         groupAcademicSubjectService.addGroupAcademicSubject(groupAcademicSubject);
 
         return "redirect:/listofdisciplines";
     }
 
+    @PreAuthorize("hasRole('USER')")
+    @RequestMapping(value = "/listofdisciplines/remove", method = RequestMethod.GET)
     public String removeDisciplinesOnList(@RequestParam("id") int id) {
         groupAcademicSubjectService.removeGroupAcademicSubject(id);
 
         return "redirect:/listofdisciplines";
     }
 
+    @PreAuthorize("hasRole('USER')")
+    @RequestMapping(value = "/listofdisciplines/edit", method = RequestMethod.GET)
     public ModelAndView editListDisciplines(@RequestParam("id") int id, ModelAndView mav) {
         mav.addObject("discipline", groupAcademicSubjectService.getGroupAcademicSubjectById(id));
         mav.addObject("listGroupAcademicSubject", groupAcademicSubjectService.getListGroupAcademicSubject());

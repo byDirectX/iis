@@ -43,19 +43,27 @@
         <th:block th:each="department : ${listDepartments}">
             <td th:if="${department.id == teacherEach.departmentId}" th:utext="${department.name}"></td>
         </th:block>
-        <td><a th:href='@{/teacher/remove(id = ${teacherEach.id})}'>Удалить</a></td>
-        <td><a th:href='@{/teacher/edit(id = ${teacherEach.id})}'>Обновить</a></td>
+        <th:block th:if="${#httpServletRequest.remoteUser} != null">
+            <td><a th:href='@{/teacher/remove(id = ${teacherEach.id})}'>Удалить</a></td>
+            <td><a th:href='@{/teacher/edit(id = ${teacherEach.id})}'>Обновить</a></td>
+        </th:block>
     </tr>
     </tbody>
 </table>
 
+<th:block th:if="${#httpServletRequest} != null">
+    <form th:action="@{/teacher}" th:object="${teacher}" method="post">
+        <input type="hidden" th:field="*{id}"/>
+        <p>Имя: <input type="text" th:field="*{firstName}" th:value="*{firstName}"/></p>
+        <p>Фамилия: <input type="text" th:field="*{lastName}" th:value="*{lastName}"/></p>
+        <p>Отчество: <input type="text" th:field="*{patronymic}" th:value="*{patronymic}"/></p>
+        <p>Кафедра:
+            <select th:field="*{departmentId}">
+                <option th:each="department : ${listDepartments}" th:value="${department.id}" th:utext="${department.name}"></option>
+            </select></p></p>
+        <p><input type="submit" value="Добавить" /> <input type="reset" value="Сбросить" /></p>
+    </form>
+</th:block>
 <h2>Добавить</h2>
-<form th:action="@{/teacher}" th:object="${teacher}" method="post">
-    <input type="hidden" th:field="*{id}"/>
-    <p>Имя: <input type="text" th:field="*{firstName}" th:value="*{firstName}"/></p>
-    <p>Фамилия: <input type="text" th:field="*{lastName}" th:value="*{lastName}"/></p>
-    <p>Отчество: <input type="text" th:field="*{patronymic}" th:value="*{patronymic}"/></p>
-    <p><input type="submit" value="Добавить" /> <input type="reset" value="Сбросить" /></p>
-</form>
 </body>
 </html>

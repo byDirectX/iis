@@ -53,47 +53,51 @@
                 <td th:if="${teacherEach.id == scheduleEach.firstTeacherId}" th:text="|${teacherEach.lastName} ${teacherEach.firstName.charAt(0)}. ${teacherEach.patronymic.charAt(0)}.|"></td>
                 <td th:if="${teacherEach.id == scheduleEach.secondTeacherId}" th:text="|${teacherEach.lastName} ${teacherEach.firstName.charAt(0)}. ${teacherEach.patronymic.charAt(0)}.|"></td>
             </th:block>
-            <td><a th:href='@{/schedule/edit(id = ${scheduleEach.id})}'>Обновить</a></td>
-            <td><a th:href='@{/schedule/remove(id = ${scheduleEach.id})}'>Удалить</a></td>
+            <th:block th:if="${#httpServletRequest.remoteUser} != null">
+                <td><a th:href='@{/schedule/edit(id = ${scheduleEach.id})}'>Обновить</a></td>
+                <td><a th:href='@{/schedule/remove(id = ${scheduleEach.id})}'>Удалить</a></td>
+            </th:block>
         </tr>
     </th:block>
 </table>
 
 
-<h2>Добавить</h2>
-<form th:action="@{/schedule}" th:object="${schedule}" method="post">
-    <input type="hidden" th:field="*{id}"/>
-    <p>Группа:
-        <select th:field="*{groupId}">
-            <option th:each="group : ${listGroup}" th:value="${group.id}" th:utext="${group.name}"></option>
-        </select></p>
-    <p>Предмет:
-        <select th:field="*{academicSubjectId}">
-            <option th:each="academicSubject : ${academicSubjectList}" th:value="${academicSubject.id}" th:utext="${academicSubject.name}"></option>
-        </select></p>
-    <p>Предмет на замену:
-        <select th:field="*{substitutionAcademicSubjectId}">
-            <option th:each="academicSubject : ${academicSubjectList}" th:value="${academicSubject.id}" th:utext="${academicSubject.name}"></option>
-        </select></p>
-    <p>Первый преподаватель:
-        <select th:field="*{firstTeacherId}">
-            <option th:each="teacher : ${teacherList}" th:value="${teacher.id}" th:utext="|${teacher.lastName} ${teacher.firstName.charAt(0)}. ${teacher.patronymic.charAt(0)}.|"></option>
-        </select></p>
-    <p>Второй преподаватель:
-        <select th:field="*{secondTeacherId}">
-            <option th:each="teacher : ${teacherList}" th:value="${teacher.id}" th:utext="|${teacher.lastName} ${teacher.firstName.charAt(0)}. ${teacher.patronymic.charAt(0)}.|"></option>
-        </select></p>
-    <p>Время:
-        <select th:field="*{timeId}">
-            <option th:each="time : ${timeList}" th:value="${time.id}" th:utext="|${time.timeFrom} - ${time.timeTo}|"></option>
-        </select></p>
-    <p>День:
-        <select th:field="*{dayId}">
-            <option th:each="day : ${listDay}" th:value="${day.id}" th:utext="${day.name}"></option>
-        </select></p>
-    <p>Флаг:
-        <input type="text" th:field="*{flag}" th:value="*{flag}"/></p>
-    <p><input type="submit" value="Добавить" /> <input type="reset" value="Сбросить" /></p>
-</form>
+<th:block th:if="${#httpServletRequest.remoteUser} != null">
+    <h2>Добавить</h2>
+    <form th:action="@{/schedule}" th:object="${schedule}" method="post">
+        <input type="hidden" th:field="*{id}"/>
+        <p>Группа:
+            <select th:field="*{groupId}">
+                <option th:each="group : ${listGroup}" th:value="${group.id}" th:utext="${group.name}"></option>
+            </select></p>
+        <p>Предмет:
+            <select th:field="*{academicSubjectId}">
+                <option th:each="academicSubject : ${academicSubjectList}" th:value="${academicSubject.id}" th:utext="${academicSubject.name}"></option>
+            </select></p>
+        <p>Предмет на замену:
+            <select th:field="*{substitutionAcademicSubjectId}">
+                <option th:each="academicSubject : ${academicSubjectList}" th:value="${academicSubject.id}" th:utext="${academicSubject.name}"></option>
+            </select></p>
+        <p>Первый преподаватель:
+            <select th:field="*{firstTeacherId}">
+                <option th:each="teacher : ${teacherList}" th:value="${teacher.id}" th:utext="|${teacher.lastName} ${teacher.firstName.charAt(0)}. ${teacher.patronymic.charAt(0)}.|"></option>
+            </select></p>
+        <p>Второй преподаватель:
+            <select th:field="*{secondTeacherId}">
+                <option th:each="teacher : ${teacherList}" th:value="${teacher.id}" th:utext="|${teacher.lastName} ${teacher.firstName.charAt(0)}. ${teacher.patronymic.charAt(0)}.|"></option>
+            </select></p>
+        <p>Время:
+            <select th:field="*{timeId}">
+                <option th:each="time : ${timeList}" th:value="${time.id}" th:utext="|${time.timeFrom} - ${time.timeTo}|"></option>
+            </select></p>
+        <p>День:
+            <select th:field="*{dayId}">
+                <option th:each="day : ${listDay}" th:value="${day.id}" th:utext="${day.name}"></option>
+            </select></p>
+        <p>Флаг:
+            <input type="text" th:field="*{flag}" th:value="*{flag}"/></p>
+        <p><input type="submit" value="Добавить" /> <input type="reset" value="Сбросить" /></p>
+    </form>
+</th:block>
 </body>
 </html>
