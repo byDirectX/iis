@@ -10,10 +10,17 @@ public class MainController {
 
     private static final Logger log = LoggerFactory.getLogger(MainController.class);
 
-    @RequestMapping(value = { "index", "/" })
+    @RequestMapping(value = { "index" })
     public String mainPage() {
         log.info("Returned index page");
 
         return "index";
+    }
+
+    @RequestMapping(value = { "hello", "/"})
+    public String helloPage() {
+        log.info("Returned hello page");
+
+        return "hello";
     }
 }

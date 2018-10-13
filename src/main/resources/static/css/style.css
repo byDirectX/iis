@@ -37,3 +37,24 @@ th, td {
     border: 1px solid black;
     padding: 4px;
 }
+
+/* menu */
+
+.menu {
+    text-align: left;
+}
+
+.menu__links-item {
+    display: inline-block;
+    color: #333333;
+    font-family: Arial;
+    font-size: 14px;
+    line-height: 30px;
+    padding: 0 5px;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+.menu__links-item:hover {
+    text-decoration: underline;
+}
