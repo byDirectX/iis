@@ -58,3 +58,28 @@ th, td {
 .menu__links-item:hover {
     text-decoration: underline;
 }
+
+.logo_img {
+    display: inline-block;
+}
+
+.logo_text {
+    display: inline-block;
+}
+
+.logo_text h1 {
+    font-family: Arial;
+    font-size: 2em;
+    color: #333333;
+    font-weight: normal;
+    display: block;
+}
+
+.img_logo {
+    width: 60px;
+    height: 60px;
+}
+
+.logo {
+    margin: 0.5em;
+}

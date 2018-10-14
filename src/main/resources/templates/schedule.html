@@ -38,27 +38,42 @@
 <h2 th:if="${groupId != null}" th:utext="${groupId.name}"></h2>
 <table th:each="dayEach : ${listDay}">
     <h2 th:utext="${dayEach.name}"></h2>
-    <th:block th:if="${listSchedule != null}" th:each="scheduleEach : ${listSchedule}">
-        <tr th:if="${dayEach.id == scheduleEach.dayId}">
-            <th:block th:each="timeEach : ${timeList}">
-                <td th:if="${timeEach.id == scheduleEach.timeId}">
-                    <p th:text="|${timeEach.timeFrom} - ${timeEach.timeTo}|">}</p>
-                </td>
-            </th:block>
-            <th:block th:each="academicSubjectEach : ${academicSubjectList}">
-                <td th:if="${academicSubjectEach.id == scheduleEach.academicSubjectId}"
-                    th:utext="${academicSubjectEach.shortName}"></td>
-            </th:block>
-            <th:block th:each="teacherEach : ${teacherList}">
-                <td th:if="${teacherEach.id == scheduleEach.firstTeacherId}" th:text="|${teacherEach.lastName} ${teacherEach.firstName.charAt(0)}. ${teacherEach.patronymic.charAt(0)}.|"></td>
-                <td th:if="${teacherEach.id == scheduleEach.secondTeacherId}" th:text="|${teacherEach.lastName} ${teacherEach.firstName.charAt(0)}. ${teacherEach.patronymic.charAt(0)}.|"></td>
-            </th:block>
-            <th:block th:if="${#httpServletRequest.remoteUser} != null">
-                <td><a th:href='@{/schedule/edit(id = ${scheduleEach.id})}'>Обновить</a></td>
-                <td><a th:href='@{/schedule/remove(id = ${scheduleEach.id})}'>Удалить</a></td>
-            </th:block>
+    <thead>
+        <tr>
+            <th>Время</th>
+            <th>Предмет</th>
+            <th>Первый преподаватель</th>
+            <th>Второй преподаватель</th>
+            <th>Тип занятия</th>
         </tr>
-    </th:block>
+    </thead>
+    <tbody>
+        <th:block th:if="${listSchedule != null}" th:each="scheduleEach : ${listSchedule}">
+            <tr th:if="${dayEach.id == scheduleEach.dayId}">
+                <th:block th:each="timeEach : ${timeList}">
+                    <td th:if="${timeEach.id == scheduleEach.timeId}">
+                        <p th:text="|${timeEach.timeFrom} - ${timeEach.timeTo}|">}</p>
+                    </td>
+                </th:block>
+                <th:block th:each="academicSubjectEach : ${academicSubjectList}">
+                    <td th:if="${academicSubjectEach.id == scheduleEach.academicSubjectId}"
+                        th:utext="${academicSubjectEach.shortName}"></td>
+                </th:block>
+                <th:block th:each="teacherEach : ${teacherList}">
+                    <td th:if="${teacherEach.id == scheduleEach.firstTeacherId}" th:text="|${teacherEach.lastName} ${teacherEach.firstName.charAt(0)}. ${teacherEach.patronymic.charAt(0)}.|"></td>
+                    <td th:if="${teacherEach.id == scheduleEach.secondTeacherId}" th:text="|${teacherEach.lastName} ${teacherEach.firstName.charAt(0)}. ${teacherEach.patronymic.charAt(0)}.|"></td>
+                </th:block>
+                <td th:if="${scheduleEach.flag} == 1" th:utext="Лекционное занятие"></td>
+                <td th:if="${scheduleEach.flag} == 2" th:utext="Лабораторная работа"></td>
+                <td th:if="${scheduleEach.flag} == 3" th:utext="Практическое занятие"></td>
+                <td th:if="${scheduleEach.flag} == 4" th:utext="Контрольная работа"></td>
+                <th:block th:if="${#httpServletRequest.remoteUser} != null">
+                    <td><a th:href='@{/schedule/edit(id = ${scheduleEach.id})}'>Обновить</a></td>
+                    <td><a th:href='@{/schedule/remove(id = ${scheduleEach.id})}'>Удалить</a></td>
+                </th:block>
+            </tr>
+        </th:block>
+    </tbody>
 </table>
 
 
@@ -94,8 +109,13 @@
             <select th:field="*{dayId}">
                 <option th:each="day : ${listDay}" th:value="${day.id}" th:utext="${day.name}"></option>
             </select></p>
-        <p>Флаг:
-            <input type="text" th:field="*{flag}" th:value="*{flag}"/></p>
+        <p>Тип занятия:
+            <select th:field="*{flag}">
+                <option th:value="1" th:utext="Лекционное занятие"></option>
+                <option th:value="2" th:utext="Лабораторная работа"></option>
+                <option th:value="3" th:utext="Практическое занятие"></option>
+                <option th:value="4" th:utext="Контрольная работа"></option>
+            </select>
         <p><input type="submit" value="Добавить" /> <input type="reset" value="Сбросить" /></p>
     </form>
 </th:block>

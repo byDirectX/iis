@@ -14,7 +14,7 @@ public class AcademicSubject {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "shortName")
+    @Column(name = "short_name")
     private String shortName;
 
     public int getId() {
