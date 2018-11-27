@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Список дисциплин</title>
+
+    <link type="text/css" media="all" th:href="@{/css/style.css}" rel="stylesheet" />
+</head>
+<body>
+
+<header>
+    <div class="menu">
+        <div class="menu__links">
+            <a class="menu__links-item" href="/listofdisciplines">Перечень дисциплин</a>
+            <a class="menu__links-item" href="/schedule">Расписание</a>
+            <a class="menu__links-item" href="/teacher">Преподаватели</a>
+        </div>
+    </div>
+
+    <div class="logo">
+        <div class="logo_img">
+            <img class="img_logo" th:src="@{/images/bsac_logo.svg}" alt="Главная">
+        </div>
+        <div class="logo_text">
+            <h1>Интегрированная информационная система<br />Белорусской государственной академии связи</h1>
+        </div>
+    </div>
+
+    <th:block th:if="${#httpServletRequest.remoteUser} != null">
+        <h1 th:inline="text">Здравствуй [[${#httpServletRequest.remoteUser}]]!</h1>
+        <form th:action="@{/logout}" method="post">
+            <input id="inputout" type="submit" value="Выйти"/>
+        </form>
+    </th:block>
+
+    <th:block th:if="${#httpServletRequest.remoteUser} == null">
+        <p>Нажмите <a th:href="@{/hello}">Войти</a> чтобы авторизоваться в системе.</p>
+    </th:block>
+</header>
+
+<th:block th:if="${listGroup != null}" th:each="groupEach : ${listGroup}">
+    <h2 th:utext="${groupEach.name}"></h2>
+    <table>
+        <th:block th:each="groupAcademicSubjectEach : ${listGroupAcademicSubject}">
+            <th:block th:each="academicSubjectEach : ${listAcademicSubject}">
+                <tr th:if="${groupEach.getId() == groupAcademicSubjectEach.getStudyGroupId() and
+            groupAcademicSubjectEach.getAcademicSubjectId() == academicSubjectEach.getId()}">
+                    <td th:utext="${academicSubjectEach.name}"></td>
+                    <td th:utext="|${groupAcademicSubjectEach.number_hours} ч.|"></td>
+                </tr>
+            </th:block>
+        </th:block>
+    </table>
+</th:block>
+</body>
+</html>
