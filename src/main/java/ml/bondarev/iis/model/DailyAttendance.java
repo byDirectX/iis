@@ -31,4 +31,8 @@ public class DailyAttendance {
         this.dayId = dayId;
         this.flag = flag;
     }
+
+    public DailyAttendance() {
+
+    }
 }

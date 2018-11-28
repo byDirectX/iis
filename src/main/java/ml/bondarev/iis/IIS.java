@@ -3,10 +3,11 @@ package ml.bondarev.iis;
 import ml.bondarev.iis.config.JpaConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-public class IIS {
+public class IIS extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
 		SpringApplication.run(new Class<?>[] { IIS.class, JpaConfig.class }, args);

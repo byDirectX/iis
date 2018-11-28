@@ -22,27 +22,21 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#">DAS | DAILY ATTENDANCE SYSTEM</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+    <ul class="nav navbar-nav mr-auto">
+    </ul>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="dailyattendance">Главная<span
-                        class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="index">Тест</a>
-            </li>
-        </ul>
-    </div>
+    <ul class="nav navbar-nav form-inline">
+        <li class="nav-item" th:if="${#httpServletRequest.remoteUser} != null">
+            <form th:action="@{/logout}" method="post">
+                <input class="btn btn-outline-primary" type="submit" value="Выйти"/>
+            </form>
+        </li>
+    </ul>
 </nav>
 
 <div class="jumbotron">
     <h1 class="display-4">Добро пожаловать, [[${#httpServletRequest.remoteUser}]]!</h1>
-    <p class="lead">Данная система управления позволяет Вам хранить и управлять файлами.</p>
+    <p class="lead">Если вы собираетесь или уже пропустили занятие, укажите это в данной системе.</p>
 </div>
 
 <!-- Модальное окно -->
@@ -52,17 +46,23 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
+                        <h4 class="modal-title" th:attr="id='myModal'+${day.getId()}">Почему решил/а пропустить?</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <h4 class="modal-title" th:attr="id='myModal'+${day.getId()}" th:text="${day.getId()}"></h4>
                     </div>
                     <div class="modal-body">
-                        Test
+                        <a class="btn btn-danger btn-block" role="button" aria-pressed="true" th:attr="href='dailyattendance/add?dayId='+${day.getId()}+'&flag=2'">Отсутствовал</a>
+                        <a class="btn btn-warning btn-block" role="button" aria-pressed="true" th:attr="href='dailyattendance/add?dayId='+${day.getId()}+'&flag=3'">Болел
+                            (ув. причина)</a>
+                        <a class="btn btn-secondary btn-block" role="button" aria-pressed="true" th:attr="href='dailyattendance/add?dayId='+${day.getId()}+'&flag=4'">Пары не
+                            было</a>
+                        <br>
+                        <hr>
+                        <a class="btn btn-outline-primary btn-block" role="button" aria-pressed="true" th:attr="href='dailyattendance/add?dayId='+${day.getId()}+'&flag=1'">Присутствовал</a>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
                     </div>
                 </div>
             </div>
@@ -70,25 +70,41 @@
     </th:block>
 </th:block>
 
-<div class="container">
+<div class="container text-center">
 
     <table th:if="${dayList != null}" th:each="dayEach : ${dayList}" class="table">
         <h3 th:text="|${dayEach.value.get(0).dayName} ${dayEach.getKey()}|"></h3>
-        <tbody th:each="day : ${dayEach.getValue()}">
-        <th:block th:each="timeEach : ${timeList}">
-            <tr th:if="${day.getTimeId() == timeEach.getId()}">
-                <th th:text="${timeEach.getNumber()}"></th>
-                <td th:text="|${timeEach.timeFrom} - ${timeEach.timeTo}|">}></td>
-                <th:block th:each="dailyAttendanceEach : ${dailyAttendanceList}">
-                    <td th:if="${dailyAttendanceEach.getDayId() == day.getId()}"
-                        th:text="${dailyAttendanceEach.getFlag()}"></td>
-                </th:block>
-                <td>
-                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
-                            th:attr="data-target='#modal'+${day.getId()}">Установить флаг
-                    </button>
-                </td>
-            </tr>
+        <tbody>
+        <th:block th:each="day : ${dayEach.getValue()}">
+            <th:block th:each="timeEach : ${timeList}">
+                <tr th:if="${day.getTimeId() == timeEach.getId()}" th:attr="id='colorTable'+${day.getId()}">
+                    <th th:text="${timeEach.getNumber()}"></th>
+                    <td th:text="|${timeEach.timeFrom} - ${timeEach.timeTo}|">}></td>
+                    <th:block th:each="dailyAttendanceEach : ${dailyAttendanceList}">
+                        <th:block th:if="${dailyAttendanceEach.getDayId() == day.getId()}">
+                            <th:block th:switch="${dailyAttendanceEach.getFlag()}">
+                                <script th:case="2" th:inline="javascript">
+                                    var trTable = document.getElementById('colorTable' + [[${day.getId()}]]);
+                                    trTable.setAttribute('class', 'table-danger')
+                                </script>
+                                <script th:case="3" th:inline="javascript">
+                                    var trTable = document.getElementById('colorTable' + [[${day.getId()}]]);
+                                    trTable.setAttribute('class', 'table-warning')
+                                </script>
+                                <script th:case="4" th:inline="javascript">
+                                    var trTable = document.getElementById('colorTable' + [[${day.getId()}]]);
+                                    trTable.setAttribute('class', 'table-secondary')
+                                </script>
+                            </th:block>
+                        </th:block>
+                    </th:block>
+                    <td>
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                                th:attr="data-target='#modal'+${day.getId()}">Установить флаг
+                        </button>
+                    </td>
+                </tr>
+            </th:block>
         </th:block>
         </tbody>
     </table>
@@ -101,7 +117,7 @@
         <div class="footer-copyright text-center py-3">2018 | created by <a target="_blank"
                                                                             href="https://github.com/bydirectx">bydirectx</a>
             | site:
-            <a href="https://bondarev.ml"> bondarev.ml</a>
+            <a href="http://bdrx.gq"> bdrx.gq</a>
         </div>
     </div>
 </footer>

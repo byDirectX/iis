@@ -3,6 +3,7 @@ package ml.bondarev.iis.service;
 import ml.bondarev.iis.dao.DailyAttendanceDao;
 import ml.bondarev.iis.model.DailyAttendance;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,7 +22,15 @@ public class DailyAttendanceServiceImpl implements DailyAttendanceService {
 
     @Override
     public void addDailyAttendance(DailyAttendance dailyAttendance) {
-        dailyAttendanceDao.save(dailyAttendance);
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        DailyAttendance da = dailyAttendanceDao.getDailyAttendanceByDayIdAndUserName(dailyAttendance.getDayId(), name);
+
+        if (da == null) {
+            dailyAttendanceDao.save(dailyAttendance);
+        } else {
+            da.setFlag(dailyAttendance.getFlag());
+            dailyAttendanceDao.saveAndFlush(da);
+        }
     }
 
     @Override

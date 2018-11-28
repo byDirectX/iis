@@ -30,7 +30,7 @@ public class DailyAttendanceController {
     private TimeService timeService;
 
 
-    @GetMapping(value = "/dailyattendance")
+    @GetMapping(value = { "/", "/dailyattendance" } )
     public ModelAndView getDailyAttendanceById(ModelAndView mav) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -43,11 +43,11 @@ public class DailyAttendanceController {
         return mav;
     }
 
-    @PostMapping(value = "/dailyattendance")
+    @GetMapping(value = "/dailyattendance/add")
     public String addDailyAttendance(@RequestParam("dayId") int dayId,
                                      @RequestParam("flag") int flag) {
         dailyAttendanceService.addDailyAttendance(new DailyAttendance(
-                (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal(),
+                (String) SecurityContextHolder.getContext().getAuthentication().getName(),
                 dayId, flag
         ));
 
